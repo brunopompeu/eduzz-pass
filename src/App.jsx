@@ -113,7 +113,7 @@ function NavBar({ screen, setScreen }) {
       </div>
 
       {/* Container de scroll — ocupa o espaço restante */}
-      <div style={{ position: 'relative', flex: 1, minWidth: 0 }}>
+      <div className="nav-scroll-wrapper">
         {/* Fade direito */}
         <div style={{
           position: 'absolute', right: 0, top: 0, bottom: 0,

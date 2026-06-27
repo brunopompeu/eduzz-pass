@@ -17,3 +17,18 @@ body {
 ::-webkit-scrollbar-thumb { background: #0A1F5C; border-radius: 3px; }
 
 .nav-scroll::-webkit-scrollbar { display: none; }
+
+/* Mobile: wrapper expande para permitir scroll */
+.nav-scroll-wrapper {
+  flex: 1;
+  min-width: 0;
+  position: relative;
+}
+
+/* Desktop: wrapper encolhe e vai para a direita (como o justify-between original) */
+@media (min-width: 768px) {
+  .nav-scroll-wrapper {
+    flex: none;
+    margin-left: auto;
+  }
+}
