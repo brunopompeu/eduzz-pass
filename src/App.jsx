@@ -1,5 +1,5 @@
 import { useState } from 'react'
-import { Search, Star, Clock, Check, ShieldCheck, Lock, Zap, Bookmark, TrendingUp, Award, Plus, ToggleLeft, ToggleRight } from 'lucide-react'
+import { Search, Star, Clock, Check, ShieldCheck, Lock, Zap, Bookmark, TrendingUp, Award, Plus } from 'lucide-react'
 
 const COLORS = {
   bg: '#0D2772',
@@ -20,6 +20,43 @@ function getGradient(category) {
     'Vendas':            'linear-gradient(135deg, #FF416C, #FF4B2B)',
   }
   return map[category] || 'linear-gradient(135deg, #0D2772, #00CAF9)'
+}
+
+const COURSE_IMAGES = {
+  'Copywriting que Converte':           'https://images.unsplash.com/photo-1455390582262-044cdead277a?w=400&h=225&fit=crop&auto=format',
+  'Investindo do Zero':                 'https://images.unsplash.com/photo-1611974789855-9c2a0a7236a3?w=400&h=225&fit=crop&auto=format',
+  'Instagram para Negócios':            'https://images.unsplash.com/photo-1611162617213-7d7a39e9b1d7?w=400&h=225&fit=crop&auto=format',
+  'Mentalidade Milionária':             'https://images.unsplash.com/photo-1559526324-4b87b5e36e44?w=400&h=225&fit=crop&auto=format',
+  'Excel Avançado para Profissionais':  'https://images.unsplash.com/photo-1586281380349-632531db7ed4?w=400&h=225&fit=crop&auto=format',
+  'Yoga e Mindfulness':                 'https://images.unsplash.com/photo-1506126613408-eca07ce68773?w=400&h=225&fit=crop&auto=format',
+  'Vendas pelo WhatsApp':               'https://images.unsplash.com/photo-1552664730-d307ca884978?w=400&h=225&fit=crop&auto=format',
+  'Python para Iniciantes':             'https://images.unsplash.com/photo-1517694712202-14dd9538aa97?w=400&h=225&fit=crop&auto=format',
+  'Gestão Financeira Pessoal':          'https://images.unsplash.com/photo-1554224155-8d04cb21cd6c?w=400&h=225&fit=crop&auto=format',
+  'Tráfego Pago no Meta Ads':           'https://images.unsplash.com/photo-1460925895917-afdab827c52f?w=400&h=225&fit=crop&auto=format',
+  'Como Montar um Negócio Online':      'https://images.unsplash.com/photo-1559526324-4b87b5e36e44?w=400&h=225&fit=crop&auto=format',
+  'Nutrição Funcional':                 'https://images.unsplash.com/photo-1490645935967-10de6ba17061?w=400&h=225&fit=crop&auto=format',
+  'Liderança Moderna':                  'https://images.unsplash.com/photo-1515187029135-18ee286d815b?w=400&h=225&fit=crop&auto=format',
+  'IA para Empreendedores':             'https://images.unsplash.com/photo-1677442135703-1787eea5ce01?w=400&h=225&fit=crop&auto=format',
+  'Meditação e Produtividade':          'https://images.unsplash.com/photo-1508672019048-805c876b67e2?w=400&h=225&fit=crop&auto=format',
+  'Finanças para Autônomos':            'https://images.unsplash.com/photo-1611974789855-9c2a0a7236a3?w=400&h=225&fit=crop&auto=format',
+  'Storytelling para Vendas':           'https://images.unsplash.com/photo-1552664730-d307ca884978?w=400&h=225&fit=crop&auto=format',
+  'Gestão Avançada de Tráfego':         'https://images.unsplash.com/photo-1460925895917-afdab827c52f?w=400&h=225&fit=crop&auto=format',
+  'Curso Premium de Branding':          'https://images.unsplash.com/photo-1558655146-d09347e92766?w=400&h=225&fit=crop&auto=format',
+}
+
+const CATEGORY_IMAGES = {
+  'Marketing':         'https://images.unsplash.com/photo-1460925895917-afdab827c52f?w=400&h=225&fit=crop&auto=format',
+  'Finanças':          'https://images.unsplash.com/photo-1611974789855-9c2a0a7236a3?w=400&h=225&fit=crop&auto=format',
+  'Empreendedorismo':  'https://images.unsplash.com/photo-1552664730-d307ca884978?w=400&h=225&fit=crop&auto=format',
+  'Saúde':             'https://images.unsplash.com/photo-1506126613408-eca07ce68773?w=400&h=225&fit=crop&auto=format',
+  'Tecnologia':        'https://images.unsplash.com/photo-1517694712202-14dd9538aa97?w=400&h=225&fit=crop&auto=format',
+  'Vendas':            'https://images.unsplash.com/photo-1515187029135-18ee286d815b?w=400&h=225&fit=crop&auto=format',
+}
+
+function getCoverImage(title, category) {
+  return COURSE_IMAGES[title]
+    || CATEGORY_IMAGES[category]
+    || CATEGORY_IMAGES['Marketing']
 }
 
 const courses = [
@@ -112,13 +149,16 @@ function CourseCard({ course }) {
       }}
     >
       {/* Cover */}
-      <div
-        className="relative"
-        style={{
-          aspectRatio: '16/9',
-          background: getGradient(course.category),
-        }}
-      >
+      <div className="relative" style={{ aspectRatio: '16/9' }}>
+        <img
+          src={getCoverImage(course.title, course.category)}
+          alt={course.title}
+          className="w-full h-full object-cover"
+          onError={e => {
+            e.target.style.display = 'none'
+            e.target.parentNode.style.background = getGradient(course.category)
+          }}
+        />
         <span
           className="absolute top-2 left-2 font-bold rounded-md"
           style={{
@@ -529,13 +569,19 @@ function LibraryScreen({ setScreen }) {
             >
               {/* Capa */}
               <div
-                className="rounded-lg flex-shrink-0"
-                style={{
-                  width: 72,
-                  height: 72,
-                  background: getGradient(course.category),
-                }}
-              />
+                className="rounded-lg flex-shrink-0 overflow-hidden"
+                style={{ width: 72, height: 72 }}
+              >
+                <img
+                  src={getCoverImage(course.title, course.category)}
+                  alt={course.title}
+                  className="w-full h-full object-cover"
+                  onError={e => {
+                    e.target.style.display = 'none'
+                    e.target.parentNode.style.background = getGradient(course.category)
+                  }}
+                />
+              </div>
               {/* Info */}
               <div style={{ flex: 1 }}>
                 <p className="font-bold" style={{ fontSize: 15 }}>{course.title}</p>
@@ -615,13 +661,16 @@ function LibraryScreen({ setScreen }) {
               }}
             >
               {/* Capa */}
-              <div
-                className="relative"
-                style={{
-                  aspectRatio: '16/9',
-                  background: getGradient(course.category),
-                }}
-              >
+              <div className="relative" style={{ aspectRatio: '16/9' }}>
+                <img
+                  src={getCoverImage(course.title, course.category)}
+                  alt={course.title}
+                  className="w-full h-full object-cover"
+                  onError={e => {
+                    e.target.style.display = 'none'
+                    e.target.parentNode.style.background = getGradient(course.category)
+                  }}
+                />
                 <span
                   className="absolute font-bold rounded-md"
                   style={{
@@ -688,13 +737,19 @@ function LibraryScreen({ setScreen }) {
             }}
           >
             <div
-              className="rounded-lg flex-shrink-0"
-              style={{
-                width: 72,
-                height: 72,
-                background: getGradient(course.category),
-              }}
-            />
+              className="rounded-lg flex-shrink-0 overflow-hidden"
+              style={{ width: 72, height: 72 }}
+            >
+              <img
+                src={getCoverImage(course.title, course.category)}
+                alt={course.title}
+                className="w-full h-full object-cover"
+                onError={e => {
+                  e.target.style.display = 'none'
+                  e.target.parentNode.style.background = getGradient(course.category)
+                }}
+              />
+            </div>
             <div style={{ flex: 1 }}>
               <p className="font-bold" style={{ fontSize: 15 }}>{course.title}</p>
               <p style={{ color: 'rgba(255,255,255,0.55)', fontSize: 13, marginTop: 2 }}>{course.author}</p>
@@ -850,9 +905,19 @@ function ProducerScreen() {
               }}
             >
               <div
-                className="rounded-lg flex-shrink-0"
-                style={{ width: 60, height: 60, background: getGradient(course.category) }}
-              />
+                className="rounded-lg flex-shrink-0 overflow-hidden"
+                style={{ width: 60, height: 60 }}
+              >
+                <img
+                  src={getCoverImage(course.title, course.category)}
+                  alt={course.title}
+                  className="w-full h-full object-cover"
+                  onError={e => {
+                    e.target.style.display = 'none'
+                    e.target.parentNode.style.background = getGradient(course.category)
+                  }}
+                />
+              </div>
 
               <div style={{ flex: 1 }}>
                 <p className="font-bold" style={{ fontSize: 15 }}>{course.title}</p>
@@ -961,19 +1026,6 @@ function ProducerScreen() {
         </table>
       </div>
 
-    </div>
-  )
-}
-
-function PlaceholderScreen({ title }) {
-  return (
-    <div
-      className="flex items-center justify-center"
-      style={{ paddingTop: 56, minHeight: '100vh' }}
-    >
-      <p style={{ color: COLORS.textSecondary, fontSize: 18 }}>
-        {title} — em breve
-      </p>
     </div>
   )
 }
