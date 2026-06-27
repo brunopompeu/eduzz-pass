@@ -86,15 +86,18 @@ function NavBar({ screen, setScreen }) {
   ]
 
   return (
-    <nav
-      className="fixed top-0 left-0 right-0 z-50 flex items-center justify-between px-6"
-      style={{
-        height: 56,
-        backgroundColor: COLORS.card,
-        borderBottom: `1px solid ${COLORS.border}`,
-      }}
-    >
-      <div style={{ display: 'flex', alignItems: 'center', gap: '10px' }}>
+    <nav style={{
+      position: 'fixed', top: 0, left: 0, right: 0, zIndex: 100,
+      backgroundColor: COLORS.card,
+      borderBottom: `1px solid ${COLORS.border}`,
+      padding: '0 16px',
+      height: 56,
+      display: 'flex',
+      alignItems: 'center',
+      gap: 12,
+    }}>
+      {/* Logo — não encolhe */}
+      <div style={{ flexShrink: 0, display: 'flex', alignItems: 'center', gap: 10 }}>
         <svg width="28" height="28" viewBox="-243 -123 244 246" xmlns="http://www.w3.org/2000/svg">
           <g transform="scale(1,-1)">
             <path
@@ -109,27 +112,28 @@ function NavBar({ screen, setScreen }) {
         </span>
       </div>
 
-      <div style={{ position: 'relative' }}>
-        {/* Fade direito — indica que há mais conteúdo */}
+      {/* Container de scroll — ocupa o espaço restante */}
+      <div style={{ position: 'relative', flex: 1, minWidth: 0 }}>
+        {/* Fade direito */}
         <div style={{
           position: 'absolute', right: 0, top: 0, bottom: 0,
-          width: 40,
+          width: 32, zIndex: 1, pointerEvents: 'none',
           background: `linear-gradient(to right, transparent, ${COLORS.card})`,
-          pointerEvents: 'none',
-          zIndex: 1,
         }} />
 
-        {/* Container scrollável */}
-        <div className="nav-scroll" style={{
-          display: 'flex',
-          gap: 4,
-          overflowX: 'auto',
-          WebkitOverflowScrolling: 'touch',
-          scrollbarWidth: 'none',
-          msOverflowStyle: 'none',
-          paddingBottom: 2,
-          paddingRight: 48,
-        }}>
+        {/* Scroll real */}
+        <div
+          className="nav-scroll"
+          style={{
+            display: 'flex',
+            gap: 4,
+            overflowX: 'scroll',
+            WebkitOverflowScrolling: 'touch',
+            scrollbarWidth: 'none',
+            msOverflowStyle: 'none',
+            paddingRight: 32,
+          }}
+        >
           {navItems.map(({ label, value }) => {
             const isActive = screen === value
             return (
@@ -138,14 +142,14 @@ function NavBar({ screen, setScreen }) {
                 onClick={() => setScreen(value)}
                 className="transition-all duration-200 rounded-lg px-4 py-2 cursor-pointer"
                 style={{
+                  flexShrink: 0,
+                  whiteSpace: 'nowrap',
                   fontSize: 14,
                   fontFamily: 'Syne, sans-serif',
                   backgroundColor: isActive ? COLORS.yellow : 'transparent',
                   color: isActive ? COLORS.bg : COLORS.textSecondary,
                   fontWeight: isActive ? 700 : 400,
                   border: 'none',
-                  whiteSpace: 'nowrap',
-                  flexShrink: 0,
                 }}
               >
                 {label}
