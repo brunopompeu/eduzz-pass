@@ -15,3 +15,5 @@ body {
 ::-webkit-scrollbar { width: 6px; height: 6px; }
 ::-webkit-scrollbar-track { background: #0D2772; }
 ::-webkit-scrollbar-thumb { background: #0A1F5C; border-radius: 3px; }
+
+.nav-scroll::-webkit-scrollbar { display: none; }

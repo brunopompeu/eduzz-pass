@@ -109,27 +109,50 @@ function NavBar({ screen, setScreen }) {
         </span>
       </div>
 
-      <div className="flex items-center gap-1">
-        {navItems.map(({ label, value }) => {
-          const isActive = screen === value
-          return (
-            <button
-              key={value}
-              onClick={() => setScreen(value)}
-              className="transition-all duration-200 rounded-lg px-4 py-2 cursor-pointer"
-              style={{
-                fontSize: 14,
-                fontFamily: 'Syne, sans-serif',
-                backgroundColor: isActive ? COLORS.yellow : 'transparent',
-                color: isActive ? COLORS.bg : COLORS.textSecondary,
-                fontWeight: isActive ? 700 : 400,
-                border: 'none',
-              }}
-            >
-              {label}
-            </button>
-          )
-        })}
+      <div style={{ position: 'relative' }}>
+        {/* Fade direito — indica que há mais conteúdo */}
+        <div style={{
+          position: 'absolute', right: 0, top: 0, bottom: 0,
+          width: 40,
+          background: `linear-gradient(to right, transparent, ${COLORS.card})`,
+          pointerEvents: 'none',
+          zIndex: 1,
+        }} />
+
+        {/* Container scrollável */}
+        <div className="nav-scroll" style={{
+          display: 'flex',
+          gap: 4,
+          overflowX: 'auto',
+          WebkitOverflowScrolling: 'touch',
+          scrollbarWidth: 'none',
+          msOverflowStyle: 'none',
+          paddingBottom: 2,
+          paddingRight: 48,
+        }}>
+          {navItems.map(({ label, value }) => {
+            const isActive = screen === value
+            return (
+              <button
+                key={value}
+                onClick={() => setScreen(value)}
+                className="transition-all duration-200 rounded-lg px-4 py-2 cursor-pointer"
+                style={{
+                  fontSize: 14,
+                  fontFamily: 'Syne, sans-serif',
+                  backgroundColor: isActive ? COLORS.yellow : 'transparent',
+                  color: isActive ? COLORS.bg : COLORS.textSecondary,
+                  fontWeight: isActive ? 700 : 400,
+                  border: 'none',
+                  whiteSpace: 'nowrap',
+                  flexShrink: 0,
+                }}
+              >
+                {label}
+              </button>
+            )
+          })}
+        </div>
       </div>
     </nav>
   )
