@@ -78,10 +78,11 @@ const categories = ['Todos', 'Marketing', 'Finanças', 'Empreendedorismo', 'Saú
 
 function NavBar({ screen, setScreen }) {
   const navItems = [
-    { label: 'Catálogo',   value: 'discovery'    },
-    { label: 'Assinatura', value: 'subscription' },
-    { label: 'Biblioteca', value: 'library'      },
-    { label: 'Produtor',   value: 'producer'     },
+    { label: 'Catálogo',       value: 'discovery'    },
+    { label: 'Assinatura',     value: 'subscription' },
+    { label: 'Biblioteca',     value: 'library'      },
+    { label: 'Produtor',       value: 'producer'     },
+    { label: 'Business Case',  value: 'business'     },
   ]
 
   return (
@@ -783,7 +784,270 @@ function CategoryCard({ cat }) {
   )
 }
 
-function ProducerScreen() {
+function Section({ title, children }) {
+  return (
+    <div style={{ marginTop: 32 }}>
+      <h2 style={{ fontSize: 18, fontWeight: 700, color: COLORS.blue, marginBottom: 16,
+        paddingBottom: 8, borderBottom: '1px solid rgba(255,255,255,0.08)' }}>
+        {title}
+      </h2>
+      {children}
+    </div>
+  )
+}
+
+function MetricCard({ label, value, sub }) {
+  return (
+    <div style={{ background: '#0A1F5C', borderRadius: 12, padding: '16px 20px',
+      border: '1px solid rgba(255,255,255,0.08)' }}>
+      <div style={{ fontSize: 22, fontWeight: 700, color: COLORS.yellow }}>{value}</div>
+      <div style={{ fontSize: 13, color: '#fff', marginTop: 4 }}>{label}</div>
+      <div style={{ fontSize: 11, color: 'rgba(255,255,255,0.45)', marginTop: 2 }}>{sub}</div>
+    </div>
+  )
+}
+
+function PlanCard({ name, price, items, highlight }) {
+  return (
+    <div style={{ background: highlight ? COLORS.yellow : '#0A1F5C', borderRadius: 12,
+      padding: '20px', border: highlight ? 'none' : '1px solid rgba(255,255,255,0.08)' }}>
+      <div style={{ fontSize: 14, fontWeight: 700, color: highlight ? '#0D2772' : '#fff' }}>{name}</div>
+      <div style={{ fontSize: 24, fontWeight: 700, color: highlight ? '#0D2772' : COLORS.yellow, margin: '8px 0 12px' }}>{price}</div>
+      {items.map((item, i) => (
+        <div key={i} style={{ fontSize: 12, color: highlight ? '#0A1F5C' : 'rgba(255,255,255,0.7)', marginBottom: 4 }}>
+          ✓ {item}
+        </div>
+      ))}
+    </div>
+  )
+}
+
+function ModelCard({ emoji, title, desc, tag }) {
+  return (
+    <div style={{ background: '#0A1F5C', borderRadius: 12, padding: '20px',
+      border: '1px solid rgba(255,255,255,0.08)', marginBottom: 12 }}>
+      <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-start', marginBottom: 8 }}>
+        <span style={{ fontSize: 20 }}>{emoji}</span>
+        <span style={{ background: COLORS.blue, color: '#0D2772', fontSize: 10, fontWeight: 700,
+          padding: '2px 8px', borderRadius: 10 }}>{tag}</span>
+      </div>
+      <div style={{ fontSize: 15, fontWeight: 700, marginBottom: 8 }}>{title}</div>
+      <div style={{ fontSize: 13, color: 'rgba(255,255,255,0.65)', lineHeight: 1.6 }}>{desc}</div>
+    </div>
+  )
+}
+
+function ValueCard({ icon, title, desc }) {
+  return (
+    <div style={{ background: '#0A1F5C', borderRadius: 12, padding: '16px',
+      border: '1px solid rgba(255,255,255,0.08)' }}>
+      <div style={{ fontSize: 24, marginBottom: 8 }}>{icon}</div>
+      <div style={{ fontSize: 14, fontWeight: 700, marginBottom: 4 }}>{title}</div>
+      <div style={{ fontSize: 12, color: 'rgba(255,255,255,0.6)', lineHeight: 1.5 }}>{desc}</div>
+    </div>
+  )
+}
+
+function PhaseCard({ n, title, desc }) {
+  return (
+    <div style={{ display: 'flex', gap: 16, background: '#0A1F5C', borderRadius: 12,
+      padding: '16px 20px', border: '1px solid rgba(255,255,255,0.08)' }}>
+      <div style={{ width: 32, height: 32, borderRadius: '50%', background: COLORS.yellow,
+        color: '#0D2772', fontWeight: 700, fontSize: 14, display: 'flex',
+        alignItems: 'center', justifyContent: 'center', flexShrink: 0 }}>{n}</div>
+      <div>
+        <div style={{ fontSize: 14, fontWeight: 700, marginBottom: 4 }}>{title}</div>
+        <div style={{ fontSize: 12, color: 'rgba(255,255,255,0.65)', lineHeight: 1.5 }}>{desc}</div>
+      </div>
+    </div>
+  )
+}
+
+function ProjectionTable() {
+  const rows = [
+    { cenario: 'Conservador (0,5%)', assinantes: '8.748',  mrr: 'R$305k',  arr: 'R$3,7M'  },
+    { cenario: 'Base (1%)',          assinantes: '17.497', mrr: 'R$647k',  arr: 'R$7,8M'  },
+    { cenario: 'Otimista (3%)',      assinantes: '52.490', mrr: 'R$1,94M', arr: 'R$23,3M' },
+  ]
+  return (
+    <div>
+      <p style={{ fontSize: 12, color: 'rgba(255,255,255,0.45)', marginBottom: 12 }}>
+        Premissa: penetração sobre 1,75M alunos ativos · Mix 60% Essencial (R$29) + 40% Total (R$49)
+      </p>
+      <table style={{ width: '100%', borderCollapse: 'collapse', fontSize: 13 }}>
+        <thead>
+          <tr style={{ borderBottom: '1px solid rgba(255,255,255,0.1)' }}>
+            {['Cenário', 'Assinantes', 'MRR', 'ARR'].map(h => (
+              <th key={h} style={{ padding: '8px 12px', textAlign: 'left',
+                color: 'rgba(255,255,255,0.45)', fontWeight: 400, fontSize: 11 }}>{h}</th>
+            ))}
+          </tr>
+        </thead>
+        <tbody>
+          {rows.map((r, i) => (
+            <tr key={i} style={{ borderBottom: '1px solid rgba(255,255,255,0.06)',
+              background: i === 1 ? 'rgba(255,188,0,0.05)' : 'transparent' }}>
+              <td style={{ padding: '12px', color: i === 1 ? COLORS.yellow : '#fff' }}>{r.cenario}</td>
+              <td style={{ padding: '12px', color: 'rgba(255,255,255,0.75)' }}>{r.assinantes}</td>
+              <td style={{ padding: '12px', color: 'rgba(255,255,255,0.75)' }}>{r.mrr}</td>
+              <td style={{ padding: '12px', fontWeight: 700, color: i === 1 ? COLORS.yellow : '#fff' }}>{r.arr}</td>
+            </tr>
+          ))}
+        </tbody>
+      </table>
+    </div>
+  )
+}
+
+function BenchmarkTable() {
+  const rows = [
+    { plataforma: 'Eduzz Pass Essencial', preco: 'R$29/mês',      cursos: '+100 cursos BR',    foco: 'Infoprodutos nativos' },
+    { plataforma: 'Eduzz Pass Total',     preco: 'R$49/mês',      cursos: '+651k cursos BR',   foco: 'Infoprodutos nativos', destaque: true },
+    { plataforma: 'Udemy Personal Plan',  preco: 'R$69–99/mês',   cursos: '+12k selecionados', foco: 'Internacional'        },
+    { plataforma: 'Alura',                preco: 'R$100–130/mês', cursos: '+1.500 cursos',     foco: 'Tech/dev'             },
+    { plataforma: 'Coursera Plus',        preco: '~R$190/mês',    cursos: '+7.000 cursos',     foco: 'Acadêmico/global'     },
+  ]
+  return (
+    <table style={{ width: '100%', borderCollapse: 'collapse', fontSize: 13 }}>
+      <thead>
+        <tr style={{ borderBottom: '1px solid rgba(255,255,255,0.1)' }}>
+          {['Plataforma', 'Preço', 'Catálogo', 'Foco'].map(h => (
+            <th key={h} style={{ padding: '8px 12px', textAlign: 'left',
+              color: 'rgba(255,255,255,0.45)', fontWeight: 400, fontSize: 11 }}>{h}</th>
+          ))}
+        </tr>
+      </thead>
+      <tbody>
+        {rows.map((r, i) => (
+          <tr key={i} style={{ borderBottom: '1px solid rgba(255,255,255,0.06)',
+            background: r.destaque ? 'rgba(255,188,0,0.07)' : 'transparent' }}>
+            <td style={{ padding: '12px', color: r.destaque ? COLORS.yellow : '#fff', fontWeight: r.destaque ? 700 : 400 }}>{r.plataforma}</td>
+            <td style={{ padding: '12px', color: 'rgba(255,255,255,0.75)' }}>{r.preco}</td>
+            <td style={{ padding: '12px', color: 'rgba(255,255,255,0.75)' }}>{r.cursos}</td>
+            <td style={{ padding: '12px', color: 'rgba(255,255,255,0.6)' }}>{r.foco}</td>
+          </tr>
+        ))}
+      </tbody>
+    </table>
+  )
+}
+
+function BusinessCaseScreen({ setScreen }) {
+  return (
+    <div style={{ fontFamily: 'Syne, sans-serif', color: '#fff', padding: '0 0 60px 0', paddingTop: 56 }}>
+
+      {/* Header */}
+      <div style={{ background: '#0A1F5C', padding: '32px 24px 24px', borderBottom: '1px solid rgba(255,255,255,0.1)' }}>
+<div style={{ display: 'flex', alignItems: 'center', gap: 12 }}>
+          <span style={{ background: COLORS.yellow, color: '#0D2772', fontWeight: 700, fontSize: 11, padding: '4px 10px', borderRadius: 20 }}>
+            INTERNO
+          </span>
+          <span style={{ color: 'rgba(255,255,255,0.5)', fontSize: 13 }}>Junho 2026</span>
+        </div>
+        <h1 style={{ fontSize: 28, fontWeight: 700, margin: '12px 0 8px' }}>Business Case — Eduzz Pass</h1>
+        <p style={{ color: 'rgba(255,255,255,0.65)', fontSize: 15, margin: 0 }}>
+          Modelo de assinatura de catálogo de cursos · Análise de oportunidade e viabilidade
+        </p>
+      </div>
+
+      <div style={{ padding: '0 24px', maxWidth: 1024, margin: '0 auto' }}>
+
+        <Section title="O Problema">
+          <p style={{ color: 'rgba(255,255,255,0.75)', lineHeight: 1.7 }}>
+            O aluno médio da Eduzz compra <strong style={{ color: '#fff' }}>1,09 cursos por ano</strong>. Não porque não quer aprender — mas porque cada compra exige uma decisão. O modelo avulso cria fricção que limita o consumo e o engajamento na plataforma.
+          </p>
+          <p style={{ color: 'rgba(255,255,255,0.75)', lineHeight: 1.7, marginTop: 12 }}>
+            Ao mesmo tempo, existem <strong style={{ color: '#fff' }}>566.905 cursos elegíveis</strong> (ativos, aprovados, ticket até R$197) e <strong style={{ color: '#fff' }}>66.776 produtores ativos</strong> (que ao menos tentaram gerar uma venda ou fizeram login na plataforma) — um catálogo vasto subutilizado.
+          </p>
+        </Section>
+
+        <Section title="A Base Existente">
+          <div style={{ display: 'grid', gridTemplateColumns: 'repeat(2, 1fr)', gap: 12 }}>
+            <MetricCard label="Alunos na base total"          value="32,4 milhões" sub="compradores válidos"         />
+            <MetricCard label="Alunos ativos (90 dias)"       value="1,75 milhão"  sub="acesso, compra ou curso"     />
+            <MetricCard label="Cursos elegíveis para o Pass"  value="651 mil"      sub="ativos, aprovados, até R$197" />
+            <MetricCard label="Produtores ativos"             value="66,8 mil"     sub="últimos 90 dias"             />
+          </div>
+        </Section>
+
+        <Section title="A Oportunidade">
+          <div style={{ background: '#0A1F5C', border: `1px solid ${COLORS.yellow}`, borderRadius: 12, padding: '20px 24px', marginBottom: 16 }}>
+            <p style={{ fontSize: 13, color: COLORS.yellow, fontWeight: 700, marginBottom: 8 }}>INSIGHT CENTRAL</p>
+            <p style={{ color: '#fff', fontSize: 16, lineHeight: 1.6, margin: 0 }}>
+              O ticket médio dos cursos elegíveis é <strong>R$49,56</strong>. O Pass Total custa <strong>R$49/mês</strong>. O aluno paga o equivalente a um curso e recebe acesso ilimitado ao catálogo — a proposta de valor se vende sozinha.
+            </p>
+          </div>
+          <p style={{ color: 'rgba(255,255,255,0.75)', lineHeight: 1.7 }}>
+            Não existe hoje nenhum concorrente brasileiro com catálogo unificado de infoprodutos em modelo de assinatura. Alura (R$100–130/mês) foca em tech. Udemy Personal Plan (R$69–99/mês) é conteúdo internacional. O Pass seria o primeiro produto nativo do ecossistema de infoprodutores brasileiros.
+          </p>
+        </Section>
+
+        <Section title="Estrutura de Planos">
+          <div style={{ display: 'grid', gridTemplateColumns: 'repeat(2, 1fr)', gap: 12 }}>
+            <PlanCard
+              name="Pass Essencial"
+              price="R$29/mês"
+              items={['Acesso a +100 cursos selecionados', '1 dispositivo', 'Certificados incluídos', 'Suporte por e-mail']}
+              highlight={false}
+            />
+            <PlanCard
+              name="Pass Total"
+              price="R$49/mês"
+              items={['Acesso a +651 mil cursos', 'Até 3 dispositivos', 'Certificados incluídos', 'Suporte prioritário', 'Novos cursos toda semana']}
+              highlight={true}
+            />
+          </div>
+        </Section>
+
+        <Section title="Como o Produtor é Remunerado">
+          <ModelCard
+            emoji="🚀"
+            title="Fase de Lançamento — Híbrido"
+            desc="Mínimo garantido por curso ativo no catálogo + bônus proporcional ao consumo acima da média. Resolve a insegurança do produtor no início, quando a base de assinantes ainda é pequena."
+            tag="RECOMENDADO"
+          />
+          <ModelCard
+            emoji="🎵"
+            title="Escala — Pool por Consumo (Spotify/Kindle)"
+            desc="A Eduzz distribui 70% da receita de assinaturas proporcionalmente aos minutos assistidos de cada curso. Simples de operar, escala automaticamente, alinha incentivo com qualidade."
+            tag="FASE 2"
+          />
+        </Section>
+
+        <Section title="Projeção de Receita (Premissas)">
+          <ProjectionTable />
+        </Section>
+
+        <Section title="Valor Estratégico para a Eduzz">
+          <div style={{ display: 'grid', gridTemplateColumns: 'repeat(2, 1fr)', gap: 12 }}>
+            <ValueCard icon="💰" title="Nova receita recorrente"  desc="MRR previsível, independente de ciclos de lançamento"                                    />
+            <ValueCard icon="📊" title="Dados de comportamento"   desc="Plataforma passa a saber o que o aluno assiste, onde abandona — ativo estratégico"        />
+            <ValueCard icon="🔄" title="Retenção de aluno"        desc="Aluno com Pass abre o app todo dia, não só quando compra. Aumenta LTV."                  />
+            <ValueCard icon="🎯" title="Reativação de produtor"   desc="Produtor inativo coloca curso no Pass e volta a ter receita sem novo lançamento"         />
+          </div>
+        </Section>
+
+        <Section title="Estratégia de Lançamento">
+          <div style={{ display: 'flex', flexDirection: 'column', gap: 12 }}>
+            <PhaseCard n="1" title="Curadoria do catálogo inicial"
+              desc="Recrutar 20–30 produtores parceiros com mínimo garantido. Formar catálogo inicial de ~500 cursos. Custo absorvido como investimento de lançamento." />
+            <PhaseCard n="2" title="Early adopters com desconto"
+              desc="Lançar para base de alunos ativos com preço de early adopter (ex: R$19/mês nos primeiros 3 meses). Meta: 10.000 assinantes em 90 dias." />
+            <PhaseCard n="3" title="Escala com pool puro"
+              desc="Com dados de consumo em mãos, migrar para pool por consumo. Abrir catálogo para todos os produtores elegíveis. Escalar via campanhas e upsell na base." />
+          </div>
+        </Section>
+
+        <Section title="Benchmark de Mercado">
+          <BenchmarkTable />
+        </Section>
+
+      </div>
+    </div>
+  )
+}
+
+function ProducerScreen({ setScreen }) {
   const [toggles, setToggles] = useState({ 1: true, 2: true, 3: false, 4: false })
 
   const handleToggle = (id, eligible) => {
@@ -1040,7 +1304,8 @@ export default function App() {
       {screen === 'discovery'    && <DiscoveryScreen setScreen={setScreen} />}
       {screen === 'subscription' && <SubscriptionScreen setScreen={setScreen} />}
       {screen === 'library'      && <LibraryScreen setScreen={setScreen} />}
-      {screen === 'producer'     && <ProducerScreen />}
+      {screen === 'producer'     && <ProducerScreen setScreen={setScreen} />}
+      {screen === 'business'     && <BusinessCaseScreen setScreen={setScreen} />}
     </div>
   )
 }
